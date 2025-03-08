@@ -1,0 +1,28 @@
+<h2>Liste des Cours</h2>
+
+<div class="d-flex justify-content-end mb-3">
+  <a routerLink="/courses/add" class="btn btn-success">
+    <i class="bi bi-plus-circle"></i> Ajouter un cours
+  </a>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Titre</th>
+      <th>Durée (heures)</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let course of courses">
+      <td><strong>{{ course.title }}</strong></td>
+      <td>{{ course.duration }}</td>
+      <td>
+        <button [routerLink]="['/courses', course.id]">Détails</button>
+        <button [routerLink]="['/courses/edit', course.id]">Modifier</button>
+        <button (click)="deleteCourse(course.id)">Supprimer</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

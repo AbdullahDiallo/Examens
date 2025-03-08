@@ -1,0 +1,28 @@
+
+<div class="container">
+    <h2 class="table-title">Liste des Emplois du Temps</h2>
+    <table class="timetable-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>ID de la salle de classe</th>
+                <th>Sujet</th>
+                <th>Heure de début</th>
+                <th>Heure de fin</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let timetable of timetables">
+                <td>{{ timetable.id }}</td>
+                <td>{{ timetable.classroomId }}</td>
+                <td>{{ timetable.subject }}</td>
+                <td>{{ timetable.startTime | date: 'dd/MM/yyyy HH:mm' }}</td>
+                <td>{{ timetable.endTime | date: 'dd/MM/yyyy HH:mm' }}</td>
+                <td>
+                    
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

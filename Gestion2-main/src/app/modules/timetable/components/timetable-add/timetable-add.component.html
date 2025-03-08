@@ -1,0 +1,25 @@
+<div class="container">
+    <h2 class="form-title">Ajouter un Emploi du Temps</h2>
+    <form [formGroup]="timetableForm" (ngSubmit)="addTimetable()" class="timetable-form">
+        <div class="form-group">
+            <label for="classroomId" class="form-label">Salle de classe:</label>
+            <select id="classroomId" formControlName="classroomId" class="form-select">
+                <option *ngFor="let classroom of classrooms" [value]="classroom.id">{{ classroom.name }}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="subject" class="form-label">Nom du cours:</label>
+            <input id="subject" formControlName="subject" type="text" class="form-input" placeholder="Entrez le nom du cours" />
+        </div>
+        <div class="form-group">
+            <label for="startTime" class="form-label">Heure de début:</label>
+            <input id="startTime" formControlName="startTime" type="datetime-local" class="form-input" />
+        </div>
+        <div class="form-group">
+            <label for="endTime" class="form-label">Heure de fin:</label>
+            <input id="endTime" formControlName="endTime" type="datetime-local" class="form-input" />
+        </div>
+        <button type="submit" class="submit-button">Ajouter</button>
+        <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+    </form>
+</div>

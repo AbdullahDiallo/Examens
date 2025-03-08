@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  students:
+    build: ./backend/students
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+    depends_on:
+      - database
+
+  professeurs:
+    build: ./backend/professeurs
+    ports:
+      - "8082:8082"
+    depends_on:
+      - database
+
+  cours:
+    build: ./backend/cours
+    ports:
+      - "8084:8084"
+    depends_on:
+      - database
+
+  classes:
+    build: ./backend/classes
+    ports:
+      - "8083:8083"
+    depends_on:
+      - database
+
+  timetable:
+    build: ./backend/timetable
+    ports:
+      - "8085:8085"
+    depends_on:
+      - database
+
+  frontend:
+    build: ./Gestion2-main
+    ports:
+      - "4200:80"
+    depends_on:
+      - students
+      - professeurs
+      - cours
+      - classes
+      - timetable
+
+  database:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: gestion_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Diallo972182
+    ports:
+      - "5432:5432"

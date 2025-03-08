@@ -1,0 +1,9 @@
+<h2>Modifier une Classe</h2>
+<form [formGroup]="classForm" (ngSubmit)="updateClass()">
+  <label>Nom :</label>
+  <input formControlName="name" required />
+  <label>Capacité :</label>
+  <input type="number" formControlName="capacity" required />
+  <button type="submit" [disabled]="classForm.invalid">Mettre à jour</button>
+</form>
+<a routerLink="/class-list">Annuler</a>

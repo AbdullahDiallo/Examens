@@ -1,0 +1,10 @@
+<div class="container" *ngIf="timetable">
+    <h2 class="detail-title">Détail de l'Emploi du Temps</h2>
+    <div class="detail-content">
+        <p><strong>ID:</strong> {{ timetable.id }}</p>
+        <p><strong>ID de la salle de classe:</strong> {{ timetable.classroomId }}</p>
+        <p><strong>Sujet:</strong> {{ timetable.subject }}</p>
+        <p><strong>Heure de début:</strong> {{ timetable.startTime | date: 'dd/MM/yyyy HH:mm' }}</p>
+        <p><strong>Heure de fin:</strong> {{ timetable.endTime | date: 'dd/MM/yyyy HH:mm' }}</p>
+    </div>
+</div>

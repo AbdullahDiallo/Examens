@@ -1,0 +1,14 @@
+<div *ngIf="student" class="student-details-container">
+  <h2 class="student-title">Détails de l'Étudiant</h2>
+  <div class="student-info">
+      <p><strong>Matricule :</strong> {{ student.matricule }}</p>
+      <p><strong>Nom :</strong> {{ student.firstName }} {{ student.lastName }}</p>
+      <p><strong>Email :</strong> {{ student.email }}</p>
+      <p><strong>Téléphone :</strong> {{ student.phone }}</p>
+      <p><strong>Date de naissance :</strong> {{ student.birthDate }}</p>
+      <p><strong>Adresse :</strong> {{ student.address }}</p>
+      <p><strong>Niveau :</strong> {{ student.niveau }}</p>
+      <p><strong>Nationalité :</strong> {{ student.nationality }}</p>
+  </div>
+  <button class="btn-back" [routerLink]="['/students']">Retour à la liste</button>
+</div>

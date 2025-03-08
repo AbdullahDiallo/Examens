@@ -1,0 +1,39 @@
+<h2>Modifier un Cours</h2>
+<form [formGroup]="courseForm" (ngSubmit)="submitForm()" class="course-form">
+  <div class="form-group">
+    <label for="title">Titre :</label>
+    <input
+      type="text"
+      id="title"
+      formControlName="title"
+      required
+      placeholder="Entrez le titre du cours"
+    />
+  </div>
+
+  <div class="form-group">
+    <label for="description">Description :</label>
+    <textarea
+      id="description"
+      formControlName="description"
+      required
+      placeholder="Entrez la description du cours"
+    ></textarea>
+  </div>
+
+  <div class="form-group">
+    <label for="duration">Durée (heures) :</label>
+    <input
+      type="number"
+      id="duration"
+      formControlName="duration"
+      required
+      placeholder="Entrez la durée du cours"
+    />
+  </div>
+
+  <div class="form-actions">
+    <button type="submit" class="btn-submit">Enregistrer</button>
+    <button type="button" routerLink="/courses" class="btn-cancel">Annuler</button>
+  </div>
+</form>

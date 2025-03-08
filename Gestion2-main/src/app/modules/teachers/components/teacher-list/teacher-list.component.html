@@ -1,0 +1,41 @@
+<!-- Bouton "Ajouter une classe" -->
+<div class="d-flex justify-content-end mb-3">
+  <a routerLink="/teachers/add" class="btn btn-success">
+    <i class="bi bi-plus-circle"></i> Ajouter un Profs
+  </a>
+</div>
+<div *ngIf="teachers.length > 0">
+    <table class="table table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Prénom</th>
+          <th scope="col">Nom</th>
+          <th scope="col">Email</th>
+          <th scope="col">Téléphone</th>
+          <th scope="col">Adresse</th>
+          <th scope="col">Spécialisation</th>
+          <th scope="col">Nationalité</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let teacher of teachers">
+          <td>{{ teacher.id }}</td>
+          <td>{{ teacher.firstName }}</td>
+          <td>{{ teacher.lastName }}</td>
+          <td>{{ teacher.email }}</td>
+          <td>{{ teacher.phone }}</td>
+          <td>{{ teacher.address }}</td>
+          <td>{{ teacher.specialization }}</td>
+          <td>{{ teacher.nationality }}</td>
+          <td>
+            <a [routerLink]="['/teachers/detail', teacher.id]" class="btn btn-primary btn-sm">Détails</a> |
+            <a [routerLink]="['/teachers/edit', teacher.id]" class="btn btn-warning text-white btn-sm">Modifier</a> |
+            <button (click)="deleteTeacher(teacher.id)" class="btn btn-danger btn-sm">Supprimer</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: classes
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: classes
+  template:
+    metadata:
+      labels:
+        app: classes
+    spec:
+      containers:
+      - name: classes
+        image: abdullahdiallo/classes:latest
+        ports:
+        - containerPort: 8081
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: classes-service
+spec:
+  selector:
+    app: classes
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8083
+  type: LoadBalancer

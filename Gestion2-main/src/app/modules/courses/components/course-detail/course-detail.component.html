@@ -1,0 +1,10 @@
+<!-- Détails du cours -->
+<div *ngIf="course" class="course-details">
+    <h2>Détails du Cours</h2>
+    <div class="details-content">
+      <p><strong>Titre :</strong> {{ course.title }}</p>
+      <p><strong>Description :</strong> {{ course.description }}</p>
+      <p><strong>Durée :</strong> {{ course.duration }} heures</p>
+    </div>
+    <button [routerLink]="['/courses']" class="btn-back">Retour</button>
+  </div>

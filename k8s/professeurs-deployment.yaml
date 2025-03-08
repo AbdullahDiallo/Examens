@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: professeurs
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: professeurs
+  template:
+    metadata:
+      labels:
+        app: professeurs
+    spec:
+      containers:
+      - name: professeurs
+        image: abdullahdiallo/professeurs:latest
+        ports:
+        - containerPort: 8081
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: professeurs-service
+spec:
+  selector:
+    app: professeurs
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8082
+  type: LoadBalancer

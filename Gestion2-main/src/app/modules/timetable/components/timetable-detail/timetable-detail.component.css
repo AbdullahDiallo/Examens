@@ -1,0 +1,13 @@
+
+/* Section de détails */
+.detail-content {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.detail-content p {
+    margin: 10px 0;
+    color: #333;
+}

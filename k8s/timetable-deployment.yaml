@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: timetable
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: timetable
+  template:
+    metadata:
+      labels:
+        app: timetable
+    spec:
+      containers:
+      - name: timetable
+        image: abdullahdiallo/timetable:latest
+        ports:
+        - containerPort: 8081
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: timetable-service
+spec:
+  selector:
+    app: timetable
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8085
+  type: LoadBalancer

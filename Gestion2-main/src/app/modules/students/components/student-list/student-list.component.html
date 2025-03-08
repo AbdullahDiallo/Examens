@@ -1,0 +1,49 @@
+<!-- Bouton "Ajouter un étudiant" -->
+<div class="d-flex justify-content-end mb-3" style="margin-top: 13%;">
+  <a routerLink="/students/add" class="btn btn-success">
+    <i class="bi bi-plus-circle"></i> Ajouter un étudiant
+  </a>
+</div>
+
+<div *ngIf="students.length > 0">
+  <table class="table table-bordered table-hover shadow-sm">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Prénom</th>
+        <th scope="col">Nom</th>
+        <th scope="col">Email</th>
+        <th scope="col">Téléphone</th>
+        <th scope="col">Adresse</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let student of students" class="align-middle">
+        <td>{{ student.id }}</td>
+        <td>{{ student.firstName }}</td>
+        <td>{{ student.lastName }}</td>
+        <td>{{ student.email }}</td>
+        <td>{{ student.phone }}</td>
+        <td>{{ student.address }}</td>
+        <td>
+          <div class="d-flex justify-content-around">
+            <a [routerLink]="['/students/detail', student.id]" class="btn btn-primary btn-sm">
+              <i class="bi bi-eye"></i> Détails
+            </a>
+            <a [routerLink]="['/students/edit', student.id]" class="btn btn-warning btn-sm text-white">
+              <i class="bi bi-pencil"></i> Modifier
+            </a>
+            <button (click)="deleteStudent(student.id)" class="btn btn-danger btn-sm">
+              <i class="bi bi-trash"></i> Supprimer
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div *ngIf="students.length === 0" class="alert alert-info">
+  Aucun étudiant trouvé.
+</div>
