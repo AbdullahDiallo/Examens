@@ -13,7 +13,7 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                git branch: 'master', url: 'https://github.com/AbdullahDiallo/ExamenDevops.git'
+                git branch: 'master', url: 'https://github.com/AbdullahDiallo/Examens.git'
             }
         }
 
