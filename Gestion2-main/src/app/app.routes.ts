@@ -36,39 +36,39 @@ export const routes: Routes = [
   // 👨‍🎓 Étudiants
   { path: 'students', component: StudentListComponent },
   { path: 'students/add', component: StudentAddComponent },
-  { path: 'students/detail/:id', component: StudentDetailComponent, renderMode: 'ssr' },
-  { path: 'students/edit/:id', component: StudentEditComponent, renderMode: 'ssr' },
+  { path: 'students/detail/:id', component: StudentDetailComponent },
+  { path: 'students/edit/:id', component: StudentEditComponent},
 
   // 👨‍🏫 Enseignants
   { path: 'teachers', component: TeacherListComponent },
   { path: 'teachers/add', component: TeacherAddComponent },
-  { path: 'teachers/detail/:id', component: TeacherDetailComponent, renderMode: 'ssr' },
-  { path: 'teachers/edit/:id', component: TeacherEditComponent, renderMode: 'ssr' },
+  { path: 'teachers/detail/:id', component: TeacherDetailComponent  },
+  { path: 'teachers/edit/:id', component: TeacherEditComponent },
 
   // 📚 Cours
   { path: 'courses', component: CourseListComponent },
   { path: 'courses/add', component: CourseAddComponent },
-  { path: 'courses/:id', component: CourseDetailComponent, renderMode: 'ssr' },
-  { path: 'courses/edit/:id', component: CourseEditComponent, renderMode: 'ssr' },
+  { path: 'courses/:id', component: CourseDetailComponent },
+  { path: 'courses/edit/:id', component: CourseEditComponent},
 
   // 🏫 Classes
   { path: 'classes', component: ClassListComponent },
   { path: 'classes/add', component: ClassAddComponent },
-  { path: 'classes/:id', component: ClassDetailComponent, renderMode: 'ssr' },
-  { path: 'classes/edit/:id', component: ClassEditComponent, renderMode: 'ssr' },
+  { path: 'classes/:id', component: ClassDetailComponent},
+  { path: 'classes/edit/:id', component: ClassEditComponent },
 
   // 🕒 Emplois du temps
   { path: 'timetables', component: TimetableListComponent },
   { path: 'timetables/add', component: TimetableAddComponent },
-  { path: 'timetables/detail/:id', component: TimetableDetailComponent, renderMode: 'ssr' },
-  { path: 'timetables/edit/:id', component: TimetableEditComponent, renderMode: 'ssr' },
+  { path: 'timetables/detail/:id', component: TimetableDetailComponent},
+  { path: 'timetables/edit/:id', component: TimetableEditComponent },
 
   // 🔀 Redirection des URLs inconnues vers la page d'accueil
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { useHash: false })],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}
