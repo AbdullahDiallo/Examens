@@ -3,8 +3,7 @@ pipeline {
 
     environment {
         DOCKER_REGISTRY = 'abdullahdiallo'
-         DOCKER_USER = credentials('docker-hub-username')
-        DOCKER_PASSWORD = credentials('docker-hub-password')
+        
     }
 
     tools {
