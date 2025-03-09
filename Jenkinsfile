@@ -51,7 +51,7 @@ pipeline {
         stage('Build & Push Docker Images') {
             steps {
                 script {
-                    def services = ['students', 'professeurs', 'cours', 'classes', 'timetable']
+                    def services = ['students', 'professeur', 'Cours', 'Classes', 'Timetable']
                     for (service in services) {
                         dir("backend/${service}") {
                             sh "docker build -t $DOCKER_REGISTRY/${service}:latest ."
