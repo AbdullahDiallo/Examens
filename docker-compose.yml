@@ -1,17 +1,16 @@
 version: '3.8'
 
 services:
-  database:
+  postgres-container:
     image: postgres:15
-    container_name: postgres-db
+    container_name: postgres-container
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: Diallo972182
     ports:
-      - "5432:5432"
+      - "5433:5432"  # Expose le port 5432 à l'intérieur du container sur le port 5433 de l'hôte
     volumes:
-      - pgdata:/var/lib/postgresql/data
-      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+      - pgdata:/var/lib/postgresql/data  # Garde les données persistantes
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
@@ -25,25 +24,25 @@ services:
       - "8081:8081"
     environment:
       - SPRING_PROFILES_ACTIVE=dev
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/studentdb
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-container:5432/studentdb  # Utilisation de "postgres-container"
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=Diallo972182
     depends_on:
-      database:
+      postgres-container:
         condition: service_healthy
 
-  professeur:
-    build: ./backend/professeur
+  professeurs:
+    build: ./backend/professeurs
     container_name: professeurs-service
     ports:
       - "8082:8082"
     environment:
       - SPRING_PROFILES_ACTIVE=dev
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/professeurdb
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-container:5432/professeurdb  # Utilisation de "postgres-container"
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=Diallo972182
     depends_on:
-      database:
+      postgres-container:
         condition: service_healthy
 
   cours:
@@ -53,11 +52,11 @@ services:
       - "8084:8084"
     environment:
       - SPRING_PROFILES_ACTIVE=dev
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/coursedb
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-container:5432/coursedb  # Utilisation de "postgres-container"
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=Diallo972182
     depends_on:
-      database:
+      postgres-container:
         condition: service_healthy
 
   classes:
@@ -67,11 +66,11 @@ services:
       - "8083:8083"
     environment:
       - SPRING_PROFILES_ACTIVE=dev
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/classesdb
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-container:5432/classesdb  # Utilisation de "postgres-container"
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=Diallo972182
     depends_on:
-      database:
+      postgres-container:
         condition: service_healthy
 
   timetable:
@@ -81,11 +80,11 @@ services:
       - "8085:8085"
     environment:
       - SPRING_PROFILES_ACTIVE=dev
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/timetabledb
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-container:5432/timetabledb  # Utilisation de "postgres-container"
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=Diallo972182
     depends_on:
-      database:
+      postgres-container:
         condition: service_healthy
 
   frontend:
