@@ -8,6 +8,6 @@ RUN npm run build --configuration=production
 
 
 FROM nginx:alpine
-COPY --from=build /app/dist/Gestion2-main /usr/share/nginx/html
+COPY --from=build Gestion2-main/dist /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
