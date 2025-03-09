@@ -8,10 +8,9 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: Diallo972182
     ports:
-      - "5432:5432"
+      - "5433:5432"  # Expose le port 5432 à l'intérieur du container sur le port 5433 de l'hôte
     volumes:
-      - pgdata:/var/lib/postgresql/data
-      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+      - pgdata:/var/lib/postgresql/data  # Garde les données persistantes
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
@@ -32,8 +31,8 @@ services:
       database:
         condition: service_healthy
 
-  professeur:
-    build: ./backend/professeur
+  professeurs:
+    build: ./backend/professeurs
     container_name: professeurs-service
     ports:
       - "8082:8082"
