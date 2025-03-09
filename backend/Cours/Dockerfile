@@ -4,7 +4,7 @@ FROM openjdk:17-jdk-slim
 
 WORKDIR /app
 
-COPY target/cours-0.0.1-SNAPSHOT.jar cours.jar
+COPY target/Cours-0.0.1-SNAPSHOT.jar cours.jar
 
 ENTRYPOINT ["java", "-jar", "cours.jar"]
 
