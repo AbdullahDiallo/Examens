@@ -46,29 +46,27 @@ pipeline {
             }
         }
 
-        stage('Load Prebuilt Docker Images') {
+        
+
+         stage('Build & Push Docker Images') {
             steps {
                 script {
                     def services = ['students', 'professeur', 'Cours', 'Classes', 'Timetable']
                     for (service in services) {
-                        sh "docker load -i /path/to/local/${service}.tar" 
+                        dir("backend/${service}") {
+                            sh "docker build -t $DOCKER_REGISTRY/${service}:latest ."
+                            sh "docker push $DOCKER_REGISTRY/${service}:latest"
+                        }
                     }
                 }
-                sh "docker load -i /path/to/local/frontend.tar"
+                // Build & Push du frontend
+                dir('Gestion2-main') {
+                    sh "docker build -t $DOCKER_REGISTRY/frontend:latest ."
+                    sh "docker push $DOCKER_REGISTRY/frontend:latest"
+                }
             }
         }
 
-        stage('Push Docker Images') {
-            steps {
-                script {
-                    def services = ['students', 'professeurs', 'cours', 'classes', 'timetable']
-                    for (service in services) {
-                        sh "docker push $DOCKER_REGISTRY/${service}:latest"
-                    }
-                }
-                sh "docker push $DOCKER_REGISTRY/frontend:latest"
-            }
-        }
 
         stage('Deploy to Kubernetes') {
             when {
