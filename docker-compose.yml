@@ -32,8 +32,8 @@ services:
       database:
         condition: service_healthy
 
-  professeurs:
-    build: ./backend/professeurs
+  professeur:
+    build: ./backend/professeur
     container_name: professeurs-service
     ports:
       - "8082:8082"

@@ -1,0 +1,13 @@
+  classes-service:
+    build: ./backend/classes
+    container_name: classes-service
+    ports:
+      - "8083:8083"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/classesdb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=Diallo972182
+    depends_on:
+      database:
+        condition: service_healthy

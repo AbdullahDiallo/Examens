@@ -1,0 +1,13 @@
+  timetable-service:
+    build: ./backend/timetable
+    container_name: timetable-service
+    ports:
+      - "8085:8085"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/timetabledb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=Diallo972182
+    depends_on:
+      database:
+        condition: service_healthy
