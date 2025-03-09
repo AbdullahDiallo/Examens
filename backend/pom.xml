@@ -53,6 +53,13 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+
+            <!-- Ajout du plugin SonarQube -->
+            <plugin>
+                <groupId>org.sonarsource</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>3.9.1.2184</version> <!-- Utilisez la dernière version stable -->
+            </plugin>
         </plugins>
     </build>
 
