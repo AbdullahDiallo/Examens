@@ -18,14 +18,7 @@ pipeline {
             }
         }
 
-        stage('Check Docker Connection') {
-            steps {
-                script {
-                    sh 'docker version'
-                    sh 'docker info'
-                }
-            }
-        }
+        
 
         stage('Login to Docker Hub') {
             steps {
