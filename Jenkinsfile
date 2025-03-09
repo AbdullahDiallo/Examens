@@ -29,7 +29,7 @@ pipeline {
         stage('Build Backend Services') {
             steps {
                 script {
-                    def services = ['students', 'professeur', 'cours', 'classes', 'timetable']
+                    def services = ['students', 'professeur', 'Cours', 'Classes', 'Timetable']
                     for (service in services) {
                         dir("backend/${service}") {
                             sh "mvn clean package"
@@ -39,31 +39,29 @@ pipeline {
             }
         }
 
-        stage('Build Frontend (Angular)') {
-            steps {
-                dir('Gestion2-main') {  // Assure-toi que ton frontend est bien dans ce dossier
-                    sh 'npm install'  // Installation des dépendances
-                    sh 'ng build --configuration=production'  // Build du frontend
-                }
-            }
-        }
-
-        stage('Build & Push Docker Images') {
+        stage('Load Prebuilt Docker Images') {
             steps {
                 script {
                     def services = ['students', 'professeur', 'Cours', 'Classes', 'Timetable']
                     for (service in services) {
-                        dir("backend/${service}") {
-                            sh "docker build -t $DOCKER_REGISTRY/${service}:latest ."
-                            sh "docker push $DOCKER_REGISTRY/${service}:latest"
-                        }
+                        sh "docker load -i /path/to/local/${service}.tar" 
                     }
                 }
-                // Build & Push du frontend
-                dir('Gestion2-main') {
-                    sh "docker build -t $DOCKER_REGISTRY/frontend:latest ."
-                    sh "docker push $DOCKER_REGISTRY/frontend:latest"
+               
+                sh "docker load -i /path/to/local/frontend.tar"
+            }
+        }
+
+        stage('Push Docker Images') {
+            steps {
+                script {
+                    def services = ['students', 'professeurs', 'cours', 'classes', 'timetable']
+                    for (service in services) {
+                        sh "docker push $DOCKER_REGISTRY/${service}:latest"
+                    }
                 }
+               
+                sh "docker push $DOCKER_REGISTRY/frontend:latest"
             }
         }
 
