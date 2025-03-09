@@ -11,6 +11,7 @@ pipeline {
         maven 'Maven'
         nodejs 'Node' 
         dockerTool 'Docker'
+        git 'Git' 
     }
 
     stages {
