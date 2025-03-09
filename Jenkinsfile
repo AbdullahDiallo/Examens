@@ -46,7 +46,31 @@ pipeline {
             }
         }
 
-        
+        stage('Save Artifacts') {
+    steps {
+        archiveArtifacts artifacts: 'backend/**/target/*.jar', fingerprint: true
+    }
+}
+stage('Run Tests') {
+    steps {
+        script {
+            def services = ['students', 'professeur', 'cours', 'classes', 'timetable']
+            for (service in services) {
+                dir("backend/${service}") {
+                    sh "mvn clean test"
+                }
+            }
+        }
+    }
+}
+stage('Code Quality Analysis') {
+    steps {
+        dir("backend") { // Exécute SonarQube dans le bon dossier
+            sh 'mvn sonar:sonar'
+        }
+    }
+}
+
 
          stage('Build & Push Docker Images') {
             steps {
