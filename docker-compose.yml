@@ -8,9 +8,9 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: Diallo972182
     ports:
-      - "5433:5432"  # Expose le port 5432 à l'intérieur du container sur le port 5433 de l'hôte
+      - "5433:5432"  
     volumes:
-      - pgdata:/var/lib/postgresql/data  # Garde les données persistantes
+      - pgdata:/var/lib/postgresql/data  
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
@@ -24,7 +24,7 @@ services:
       - "8081:8081"
     environment:
       - SPRING_PROFILES_ACTIVE=dev
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-container:5432/studentdb  # Utilisation de "postgres-container"
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-container:5432/studentdb  
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=Diallo972182
     depends_on:
@@ -32,13 +32,13 @@ services:
         condition: service_healthy
 
   professeurs:
-    build: ./backend/professeurs
+    build: ./backend/professeur
     container_name: professeurs-service
     ports:
       - "8082:8082"
     environment:
       - SPRING_PROFILES_ACTIVE=dev
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-container:5432/professeurdb  # Utilisation de "postgres-container"
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-container:5432/professeurdb  
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=Diallo972182
     depends_on:
@@ -46,13 +46,13 @@ services:
         condition: service_healthy
 
   cours:
-    build: ./backend/cours
+    build: ./backend/Cours
     container_name: cours-service
     ports:
       - "8084:8084"
     environment:
       - SPRING_PROFILES_ACTIVE=dev
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-container:5432/coursedb  # Utilisation de "postgres-container"
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-container:5432/coursedb  
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=Diallo972182
     depends_on:
@@ -60,13 +60,13 @@ services:
         condition: service_healthy
 
   classes:
-    build: ./backend/classes
+    build: ./backend/Classes
     container_name: classes-service
     ports:
       - "8083:8083"
     environment:
       - SPRING_PROFILES_ACTIVE=dev
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-container:5432/classesdb  # Utilisation de "postgres-container"
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-container:5432/classesdb  
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=Diallo972182
     depends_on:
@@ -74,13 +74,13 @@ services:
         condition: service_healthy
 
   timetable:
-    build: ./backend/timetable
+    build: ./backend/Timetable
     container_name: timetable-service
     ports:
       - "8085:8085"
     environment:
       - SPRING_PROFILES_ACTIVE=dev
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-container:5432/timetabledb  # Utilisation de "postgres-container"
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-container:5432/timetabledb  
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=Diallo972182
     depends_on:
@@ -94,10 +94,10 @@ services:
       - "4200:80"
     depends_on:
       - students
-      - professeurs
-      - cours
-      - classes
-      - timetable
+      - professeur
+      - Cours
+      - Classes
+      - Timetable
 
 volumes:
   pgdata:
