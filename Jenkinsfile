@@ -20,7 +20,7 @@ pipeline {
 
         
 
-        stage('Login to Docker Hub') {
+       stage('Login to Docker Hub') {
     steps {
         script {
             withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
@@ -29,6 +29,7 @@ pipeline {
         }
     }
 }
+
 
 
         stage('Install Node.js & Angular CLI') {
