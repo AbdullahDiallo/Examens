@@ -66,7 +66,7 @@ stage('Run Tests') {
 stage('Code Quality Analysis') {
     steps {
         dir("backend") { // Exécute SonarQube dans le bon dossier
-            sh 'mvn clean install sonar:sonar
+            sh "mvn clean install sonar:sonar"
 '
         }
     }
