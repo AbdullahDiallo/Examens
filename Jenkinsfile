@@ -1,45 +1,105 @@
-pipeline { 
+pipeline {
     agent any
 
+    environment {
+        DOCKER_REGISTRY = 'abdullahdiallo'
+        
+    }
+
+    tools {
+        maven 'Maven'
+        nodejs 'Node' 
+        dockerTool 'Docker'
+        git 'Git' 
+    }
+
     stages {
-        stage('Cloner le code') {
+        stage('Checkout Code') {
             steps {
-                git 'https://github.com/AbdullahDiallo/Examens.git'
+                git branch: 'master', url: 'https://github.com/AbdullahDiallo/Examens.git'
             }
         }
 
-        stage('Construire les images Docker') {
+        
+
+
+
+
+        stage('Install Node.js & Angular CLI') {
             steps {
                 script {
-                    bat 'docker-compose build'
+                    sh 'npm install -g @angular/cli'
                 }
             }
         }
 
-       
-
-
-
-    stage('Push de l\'image Docker') {
+        stage('Build Backend Services') {
             steps {
                 script {
-                    def registry = (ENV == 'dev' || ENV == 'staging') ? LOCAL_REGISTRY : REMOTE_REGISTRY
-                    def imageTag = "${registry}/gestionEtablissement:${BUILD_NUMBER}"
+                    def services = ['students', 'professeur', 'Cours', 'Classes', 'Timetable']
+                    for (service in services) {
+                        dir("backend/${service}") {
+                            sh "mvn clean package"
+                        }
+                    }
+                }
+            }
+        }
 
-                    bat "docker tag gestionEtablissement ${imageTag}"
-                    bat "docker push ${imageTag}"
-                    echo "✅ Image Docker poussée vers ${registry}"
+        stage('Save Artifacts') {
+    steps {
+        archiveArtifacts artifacts: 'backend/**/target/*.jar', fingerprint: true
+    }
+}
+stage('Run Tests') {
+    steps {
+        script {
+            def services = ['students', 'professeur', 'cours', 'classes', 'timetable']
+            for (service in services) {
+                dir("backend/${service}") {
+                    sh "mvn clean test"
                 }
             }
         }
     }
+}
+stage('Code Quality Analysis') {
+    steps {
+        dir("backend") { // Exécute SonarQube dans le bon dossier
+            sh "mvn clean install sonar:sonar"
 
-    post {
-        success {
-            echo '🎉 Pipeline réussie et artéfact publié !'
         }
-        failure {
-            echo '⚠️ Erreur dans la pipeline, vérifiez les logs.'
+    }
+}
+
+
+         stage('Build & Push Docker Images') {
+            steps {
+                script {
+                    def services = ['students', 'professeur', 'Cours', 'Classes', 'Timetable']
+                    for (service in services) {
+                        dir("backend/${service}") {
+                            sh "docker build -t $DOCKER_REGISTRY/${service}:latest ."
+                            sh "docker push $DOCKER_REGISTRY/${service}:latest"
+                        }
+                    }
+                }
+                // Build & Push du frontend
+                dir('Gestion2-main') {
+                    sh "docker build -t $DOCKER_REGISTRY/frontend:latest ."
+                    sh "docker push $DOCKER_REGISTRY/frontend:latest"
+                }
+            }
+        }
+
+
+        stage('Deploy to Kubernetes') {
+            when {
+                branch 'main'
+            }
+            steps {
+                sh 'kubectl apply -f k8s/'
+            }
         }
     }
 }
