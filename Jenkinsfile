@@ -18,6 +18,25 @@ pipeline {
             }
         }
 
+        stage('Check Docker Connection') {
+            steps {
+                script {
+                    sh 'docker version'
+                    sh 'docker info'
+                }
+            }
+        }
+
+        stage('Login to Docker Hub') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
+                        sh "docker login -u $DOCKER_USER -p $DOCKER_PASSWORD"
+                    }
+                }
+            }
+        }
+
         stage('Install Node.js & Angular CLI') {
             steps {
                 script {
@@ -47,7 +66,6 @@ pipeline {
                         sh "docker load -i /path/to/local/${service}.tar" 
                     }
                 }
-               
                 sh "docker load -i /path/to/local/frontend.tar"
             }
         }
@@ -60,7 +78,6 @@ pipeline {
                         sh "docker push $DOCKER_REGISTRY/${service}:latest"
                     }
                 }
-               
                 sh "docker push $DOCKER_REGISTRY/frontend:latest"
             }
         }
