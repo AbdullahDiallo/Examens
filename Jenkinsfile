@@ -3,7 +3,8 @@ pipeline {
 
     environment {
         DOCKER_REGISTRY = 'abdullahdiallo'
-        
+        DOCKER_CLI = '/usr/local/bin/docker' // Chemin correct sur macOS
+        // DOCKER_CLI = '/usr/bin/docker' // Décommente pour Linux
     }
 
     tools {
@@ -20,11 +21,6 @@ pipeline {
             }
         }
 
-        
-
-
-
-
         stage('Install Node.js & Angular CLI') {
             steps {
                 script {
@@ -36,7 +32,7 @@ pipeline {
         stage('Build Backend Services') {
             steps {
                 script {
-                    def services = ['students', 'professeur', 'Cours', 'Classes', 'Timetable']
+                    def services = ['students', 'professeur', 'cours', 'classes', 'timetable']
                     for (service in services) {
                         dir("backend/${service}") {
                             sh "mvn clean package"
@@ -47,51 +43,49 @@ pipeline {
         }
 
         stage('Save Artifacts') {
-    steps {
-        archiveArtifacts artifacts: 'backend/**/target/*.jar', fingerprint: true
-    }
-}
-stage('Run Tests') {
-    steps {
-        script {
-            def services = ['students', 'professeur', 'cours', 'classes', 'timetable']
-            for (service in services) {
-                dir("backend/${service}") {
-                    sh "mvn clean test"
-                }
+            steps {
+                archiveArtifacts artifacts: 'backend/**/target/*.jar', fingerprint: true
             }
         }
-    }
-}
-stage('Code Quality Analysis') {
-    steps {
-        dir("backend") { // Exécute SonarQube dans le bon dossier
-            sh "mvn clean install sonar:sonar"
 
-        }
-    }
-}
-
-
-         stage('Build & Push Docker Images') {
+        stage('Run Tests') {
             steps {
                 script {
-                    def services = ['students', 'professeur', 'Cours', 'Classes', 'Timetable']
+                    def services = ['students', 'professeur', 'cours', 'classes', 'timetable']
                     for (service in services) {
                         dir("backend/${service}") {
-                            sh "docker build -t $DOCKER_REGISTRY/${service}:latest ."
-                            sh "docker push $DOCKER_REGISTRY/${service}:latest"
+                            sh "mvn clean test"
                         }
                     }
                 }
-                // Build & Push du frontend
-                dir('Gestion2-main') {
-                    sh "docker build -t $DOCKER_REGISTRY/frontend:latest ."
-                    sh "docker push $DOCKER_REGISTRY/frontend:latest"
+            }
+        }
+
+        stage('Code Quality Analysis') {
+            steps {
+                dir("backend") {
+                    sh "mvn clean install sonar:sonar"
                 }
             }
         }
 
+        stage('Build & Push Docker Images') {
+            steps {
+                script {
+                    def services = ['students', 'professeur', 'cours', 'classes', 'timetable']
+                    for (service in services) {
+                        dir("backend/${service}") {
+                            sh "$DOCKER_CLI build -t $DOCKER_REGISTRY/${service}:latest ."
+                            sh "$DOCKER_CLI push $DOCKER_REGISTRY/${service}:latest"
+                        }
+                    }
+                }
+                dir('Gestion2-main') {
+                    sh "$DOCKER_CLI build -t $DOCKER_REGISTRY/frontend:latest ."
+                    sh "$DOCKER_CLI push $DOCKER_REGISTRY/frontend:latest"
+                }
+            }
+        }
 
         stage('Deploy to Kubernetes') {
             when {
