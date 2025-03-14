@@ -20,6 +20,13 @@ pipeline {
                 git branch: 'master', url: 'https://github.com/AbdullahDiallo/Examens.git'
             }
         }
+stage('Login to Docker Hub') {
+    steps {
+        script {
+            sh "echo '\$DOCKER_PASSWORD' | docker login -u '\$DOCKER_USERNAME' --password-stdin"
+        }
+    }
+}
 
         stage('Install Node.js & Angular CLI') {
             steps {
