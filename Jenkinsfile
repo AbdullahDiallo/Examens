@@ -4,7 +4,8 @@ pipeline {
     environment {
         DOCKER_REGISTRY = 'abdullahdiallo'
         DOCKER_CLI = '/usr/local/bin/docker' // Chemin correct sur macOS
-        // DOCKER_CLI = '/usr/bin/docker' // Décommente pour Linux
+        DOCKER_USERNAME = credentials('docker-username') // Ajoute ces credentials dans Jenkins
+        DOCKER_PASSWORD = credentials('docker-password')
     }
 
     tools {
@@ -72,17 +73,26 @@ pipeline {
         stage('Build & Push Docker Images') {
             steps {
                 script {
+                    // Connexion à Docker Hub
+                    sh "echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin"
+
                     def services = ['students', 'professeur', 'cours', 'classes', 'timetable']
                     for (service in services) {
                         dir("backend/${service}") {
-                            sh "$DOCKER_CLI build -t $DOCKER_REGISTRY/${service}:latest ."
-                            sh "$DOCKER_CLI push $DOCKER_REGISTRY/${service}:latest"
+                            // Vérifier que Docker est installé et configuré
+                            sh "docker version"
+
+                            // Construire et pousser l'image
+                            sh "docker build -t $DOCKER_REGISTRY/${service}:latest ."
+                            sh "docker push $DOCKER_REGISTRY/${service}:latest"
                         }
                     }
                 }
+
+                // Build & Push du frontend
                 dir('Gestion2-main') {
-                    sh "$DOCKER_CLI build -t $DOCKER_REGISTRY/frontend:latest ."
-                    sh "$DOCKER_CLI push $DOCKER_REGISTRY/frontend:latest"
+                    sh "docker build -t $DOCKER_REGISTRY/frontend:latest ."
+                    sh "docker push $DOCKER_REGISTRY/frontend:latest"
                 }
             }
         }
